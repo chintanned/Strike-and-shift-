@@ -1,0 +1,21 @@
+function onEdit(e) {
+  if (e && e.source && e.range) { // Check if event object and its properties exist
+    var sheet = e.source.getActiveSheet();
+    var row = e.range.getRow();
+    var column = e.range.getColumn();
+
+    if (column == 1) { // Assuming checkbox is in the first column (column A)
+      if (e.value == "TRUE") {
+        var lastRow = sheet.getLastRow();
+        var range = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+        range.setFontLine("line-through");
+        sheet.insertRowAfter(lastRow);
+        sheet.getRange(row, 1, 1, sheet.getLastColumn()).copyTo(sheet.getRange(lastRow + 1, 1));
+        sheet.deleteRow(row);
+      } else {
+        var range = sheet.getRange(row, 1, 1, sheet.getLastColumn());
+        range.setFontLine(null);
+      }
+    }
+  }
+}
